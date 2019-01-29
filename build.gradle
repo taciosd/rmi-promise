@@ -51,6 +51,15 @@ publishing {
 
     repositories {
         maven {
+            credentials {
+                /**
+                 * Requires the two properties below in 'gradle.properties'
+                 */
+                username ossSonatypeUser
+                password ossSonatypePassword
+            }
+
+            // https://issues.sonatype.org/browse/OSSRH-45937
             def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
             def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
             url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
@@ -63,8 +72,6 @@ signing {
      * signing.keyId=A63C8E3A
      * signing.password=
      * signing.secretKeyRingFile=
-     * 
-     * https://issues.sonatype.org/browse/OSSRH-45937
      */
     sign publishing.publications.mavenJava
 }
