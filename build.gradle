@@ -2,6 +2,7 @@
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 version = '1.0.0-SNAPSHOT'
 
@@ -37,10 +38,10 @@ artifacts {
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        mavenJava(MavenPublication) {
             groupId = 'io.github.taciosd'
             artifactId = 'promise-rmi'
-            version = '1.0.0-SNAPSHOT'
+            version = project.version
 
             from components.java
             artifact sourcesJar
@@ -55,4 +56,15 @@ publishing {
             url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
         }
     }
+}
+
+signing {
+    /* Requires some properties inside 'gradle.properties'
+     * signing.keyId=A63C8E3A
+     * signing.password=
+     * signing.secretKeyRingFile=
+     * 
+     * https://issues.sonatype.org/browse/OSSRH-45937
+     */
+    sign publishing.publications.mavenJava
 }
