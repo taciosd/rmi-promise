@@ -1,0 +1,58 @@
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+version = '1.0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+System.setProperty('line.separator', '\n')
+
+task sourcesJar(type: Jar) {
+    group = 'build'
+    description = 'Gera o jar com o código-fonte do projeto.'
+
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    group = 'build'
+    description = 'Gera o jar do javadoc do projeto.'
+
+    classifier 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.github.taciosd'
+            artifactId = 'promise-rmi'
+            version = '1.0.0-SNAPSHOT'
+
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+
+    repositories {
+        maven {
+            def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
