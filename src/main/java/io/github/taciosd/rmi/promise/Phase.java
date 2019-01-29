@@ -1,4 +1,4 @@
-package tsd.rmi.promise;
+package io.github.taciosd.rmi.promise;
 
 /**
  * Created by taciosd on 1/28/19.

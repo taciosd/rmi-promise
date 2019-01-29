@@ -1,6 +1,6 @@
-package demo.common.service;
+package io.github.taciosd.rmi.promise.demo.common.service;
 
-import tsd.rmi.promise.RmiPromise;
+import io.github.taciosd.rmi.promise.RmiPromise;
 
 import java.io.Serializable;
 import java.rmi.Remote;

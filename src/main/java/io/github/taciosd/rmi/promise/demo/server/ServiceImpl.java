@@ -1,4 +1,4 @@
-package demo.server;
+package io.github.taciosd.rmi.promise.demo.server;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -6,10 +6,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import demo.common.service.Service;
-import tsd.rmi.promise.Phase;
-import tsd.rmi.promise.RmiPromise;
-import tsd.rmi.promise.RmiPromiseImpl;
+import io.github.taciosd.rmi.promise.demo.common.service.Service;
+import io.github.taciosd.rmi.promise.Phase;
+import io.github.taciosd.rmi.promise.RmiPromise;
+import io.github.taciosd.rmi.promise.RmiPromiseImpl;
 
 /**
  * Created by taciosd on 1/28/19.

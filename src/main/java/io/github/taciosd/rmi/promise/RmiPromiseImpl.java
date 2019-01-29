@@ -1,4 +1,4 @@
-package tsd.rmi.promise;
+package io.github.taciosd.rmi.promise;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;

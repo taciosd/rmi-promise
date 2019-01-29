@@ -1,4 +1,4 @@
-package demo.client;
+package io.github.taciosd.rmi.promise.demo.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

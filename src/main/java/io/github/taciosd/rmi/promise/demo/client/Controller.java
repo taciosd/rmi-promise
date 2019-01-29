@@ -1,19 +1,20 @@
-package demo.client;
+package io.github.taciosd.rmi.promise.demo.client;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import demo.common.service.Service;
+import io.github.taciosd.rmi.promise.demo.common.service.Service;
+import io.github.taciosd.rmi.promise.DefaultCallback;
+import io.github.taciosd.rmi.promise.Phase;
+import io.github.taciosd.rmi.promise.RmiPromise;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import tsd.rmi.promise.DefaultCallback;
-import tsd.rmi.promise.Phase;
-import tsd.rmi.promise.RmiPromise;
+
 
 public class Controller {
 
