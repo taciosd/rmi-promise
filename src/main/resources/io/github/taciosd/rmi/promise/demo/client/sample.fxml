@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" prefHeight="200.0" prefWidth="600.0" vgap="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.172-ea" fx:controller="io.github.taciosd.rmi.promise.demo.client.Controller">
+
+    <ProgressIndicator fx:id="progressIndicator" maxWidth="1.7976931348623157E308" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <Button fx:id="toggleBtn" onAction="#onToggleBtnClick" GridPane.columnIndex="1" GridPane.rowIndex="0">START</Button>
+    <Label fx:id="statusLabel" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="16.0" prefWidth="388.0" GridPane.columnIndex="0" GridPane.rowIndex="1">Pronto para executar</Label>
+   <columnConstraints>
+      <ColumnConstraints percentWidth="80.0" />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>

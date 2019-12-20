@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import io.github.taciosd.rmi.promise.demo.common.service.ExecutionFlow;
 import io.github.taciosd.rmi.promise.demo.common.service.Service;
 import io.github.taciosd.rmi.promise.Phase;
 import io.github.taciosd.rmi.promise.RmiPromise;
@@ -21,17 +22,22 @@ public class ServiceImpl extends UnicastRemoteObject implements Service {
     }
 
     @Override
-    public RmiPromise<Double> executeHeavyWork() throws RemoteException {
+    public RmiPromise<Double, ExecutionFlow> executeHeavyWork() throws RemoteException {
 
-        RmiPromiseImpl<Double> promise = new RmiPromiseImpl<>();
+        RmiPromiseImpl<Double, ExecutionFlow> promise = new RmiPromiseImpl<>();
 
         Thread thread = new Thread(() -> {
             try {
+                int statusPercentCount = 100 / ExecutionFlow.values().length;
+
                 for (int i = 0; i < 100; i++) {
                     Thread.sleep(150);
-                    promise.setProgress(i+1);
+                    promise.updateProgressValue(i);
 
-                    if (i == 20 && Math.random() > 0.7) {
+                    int currState = (i / statusPercentCount);
+                    promise.updateProgressState(ExecutionFlow.values()[currState]);
+
+                    if (i == 20 && Math.random() < 0.1) {
                         throw new SQLException("ORA-0000");
                     }
 

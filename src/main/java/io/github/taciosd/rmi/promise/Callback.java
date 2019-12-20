@@ -10,5 +10,5 @@ public interface Callback extends Remote {
 
     void onPhaseChanged(Phase phase) throws RemoteException;
 
-    void onProgressChanged(int newProgress) throws RemoteException;
+    void onProgressChanged(ProgressEvent event) throws RemoteException;
 }

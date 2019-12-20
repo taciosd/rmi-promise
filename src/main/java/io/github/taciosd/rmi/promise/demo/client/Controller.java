@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import io.github.taciosd.rmi.promise.ProgressEvent;
+import io.github.taciosd.rmi.promise.demo.common.service.ExecutionFlow;
 import io.github.taciosd.rmi.promise.demo.common.service.Service;
 import io.github.taciosd.rmi.promise.DefaultCallback;
 import io.github.taciosd.rmi.promise.Phase;
@@ -27,7 +29,7 @@ public class Controller {
     @FXML
     private Label statusLabel;
 
-    private RmiPromise<Double> promise;
+    private RmiPromise<Double, ExecutionFlow> promise;
 
     @FXML
     void initialize() {
@@ -49,7 +51,7 @@ public class Controller {
             try {
                 promise.cancel();
                 toggleBtn.setDisable(true);
-                statusLabel.setText("Cancelando...");
+                statusLabel.setText("Cancelling...");
             }
             catch (RemoteException e) {
                 e.printStackTrace();
@@ -77,7 +79,7 @@ public class Controller {
 
         toggleBtn.setText("CANCEL");
         progressIndicator.setDisable(false);
-        statusLabel.setText("Executando...");
+        statusLabel.setText("Executing...");
 
         try {
             promise.registerCallback(new DefaultCallback() {
@@ -99,10 +101,10 @@ public class Controller {
                                 e.printStackTrace();
                             }
 
-                            statusLabel.setText("Sucesso! (result = " + result + ")");
+                            statusLabel.setText("Success! (result = " + result + ")");
                         }
                         else if (phase.equals(Phase.CANCELLED)) {
-                            statusLabel.setText("Cancelado!");
+                            statusLabel.setText("Cancelled!");
                         }
                         else if (phase.equals(Phase.FAILED)) {
                             Throwable throwable = null;
@@ -113,43 +115,22 @@ public class Controller {
                                 e.printStackTrace();
                             }
 
-                            statusLabel.setText("Falha! (" + throwable.getMessage() + ")");
+                            statusLabel.setText("Error! (" + throwable.getMessage() + ")");
                         }
                     });
                 }
 
                 @Override
-                public void onProgressChanged(int newProgress) throws RemoteException {
-                    Platform.runLater(() -> progressIndicator.setProgress((double) newProgress / 100));
+                public void onProgressChanged(ProgressEvent event) throws RemoteException {
+                    Platform.runLater(() -> {
+                        progressIndicator.setProgress((double) event.getValue() / 100);
+                        statusLabel.setText("Current state of the work: " + event.getState());
+                    });
                 }
             });
         }
         catch (RemoteException e) {
             e.printStackTrace();
         }
-
-
-/*
-        new Thread(() -> {
-            try {
-                while (!promise.isFinished()) {
-                    Thread.sleep(200);
-                    double progress = (double) promise.getProgress() / 100;
-
-                    Platform.runLater(() -> progressIndicator.setProgress(progress));
-                }
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            Platform.runLater(() -> {
-                toggleBtn.setText("START");
-                toggleBtn.setDisable(false);
-                progressIndicator.setProgress(0.0);
-                progressIndicator.setDisable(true);
-            });
-        }).start();
-*/
     }
 }

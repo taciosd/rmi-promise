@@ -11,5 +11,5 @@ import java.rmi.RemoteException;
  */
 public interface Service extends Remote, Serializable {
 
-    RmiPromise<Double> executeHeavyWork() throws RemoteException;
+    RmiPromise<Double, ExecutionFlow> executeHeavyWork() throws RemoteException;
 }

@@ -7,10 +7,10 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by taciosd on 1/28/19.
  */
-public class RmiPromiseImpl<T extends Serializable> extends UnicastRemoteObject implements RmiPromise<T>, Serializable {
+public class RmiPromiseImpl<T extends Serializable, S extends Serializable> extends UnicastRemoteObject implements RmiPromise<T, S>, Serializable {
 
     private Phase currentPhase = Phase.READY;
-    private int progressValue = 0;
+    private ProgressEvent<S> progress = ProgressEvent.create(0, null);
     private boolean hasCancelOrder = false;
     private Callback callback;
 
@@ -22,16 +22,25 @@ public class RmiPromiseImpl<T extends Serializable> extends UnicastRemoteObject 
     }
 
     @Override
-    public int getProgress() throws RemoteException {
-        return progressValue;
+    public ProgressEvent<S> getProgress() throws RemoteException {
+        return progress;
     }
 
-    public void setProgress(int newProgress) {
-        if (newProgress < 0 || newProgress > 100)
-            throw new IllegalStateException("");
+    public void updateProgress(int value, S state) {
+        if (value < 0 || value > 100) {
+            throw new IllegalArgumentException("Progress value is out of bounds [0,100].");
+        }
 
-        this.progressValue = newProgress;
+        this.progress = ProgressEvent.create(value, state);
         publishProgress();
+    }
+
+    public void updateProgressValue(int value) {
+        updateProgress(value, progress.getState());
+    }
+
+    public void updateProgressState(S state) {
+        updateProgress(progress.getValue(), state);
     }
 
     @Override
@@ -76,7 +85,7 @@ public class RmiPromiseImpl<T extends Serializable> extends UnicastRemoteObject 
     private void publishProgress() {
         if (callback != null) {
             try {
-                callback.onProgressChanged(progressValue);
+                callback.onProgressChanged(progress);
             }
             catch (RemoteException e) {
                 e.printStackTrace();

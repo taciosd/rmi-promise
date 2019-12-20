@@ -16,5 +16,5 @@ public abstract class DefaultCallback extends UnicastRemoteObject implements Cal
     public abstract void onPhaseChanged(Phase phase) throws RemoteException;
 
     @Override
-    public abstract void onProgressChanged(int newProgress) throws RemoteException;
+    public abstract void onProgressChanged(ProgressEvent event) throws RemoteException;
 }

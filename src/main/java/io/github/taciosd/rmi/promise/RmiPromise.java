@@ -7,9 +7,9 @@ import java.rmi.RemoteException;
 /**
  * Created by taciosd on 1/28/19.
  */
-public interface RmiPromise<T extends Serializable> extends Remote, Serializable {
+public interface RmiPromise<T extends Serializable, S extends Serializable> extends Remote, Serializable {
 
-    int getProgress() throws RemoteException;
+    ProgressEvent getProgress() throws RemoteException;
 
     boolean isFinished()  throws RemoteException;
 
